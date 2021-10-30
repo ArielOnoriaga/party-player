@@ -18,10 +18,10 @@ response = requests.post(
     }
 )
 jsonResponse = response.json()
-responseArray = json.loads(json.dumps(jsonResponse));
+responseArray = json.loads(json.dumps(jsonResponse))
 
-token = responseArray['access_token'];
-expiration = responseArray['expires_in'];
+token = responseArray['access_token']
+expiration = responseArray['expires_in']
 currentUnixTime = int( time.time() )
 
 tokenFile = 'token.txt'
@@ -31,4 +31,4 @@ if os.path.exists(tokenFile) :
 
 with open(tokenFile, 'a') as the_file:
     data = {'token': token, 'expiration': expiration, 'created': currentUnixTime}
-    the_file.write(f"{data}");
+    the_file.write(f"{data}")
