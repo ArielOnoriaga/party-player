@@ -1,9 +1,9 @@
-require('dotenv').config();
+'use strict';
 
 const request = require('request-promise-native');
 const credentials = Buffer.from(`${process.env.CLIENT_ID}:${process.env.CLIENT_SECRET}`).toString('base64');
 
-class HttpClient {
+class SpotifyHttpClient {
   #tokenData;
   #base = 'https://api.spotify.com/v1';
 
@@ -12,6 +12,8 @@ class HttpClient {
   }
 
   static async create() {
+    if(global.httpClient) return global.httpClient
+
     const token = await request({
       method: 'POST',
       uri: 'https://accounts.spotify.com/api/token',
@@ -23,7 +25,9 @@ class HttpClient {
       json: true,
     });
 
-    return new this(token);
+    console.log(token.access_token)
+    global.httpClient = new this(token);
+    return global.httpClient;
   }
 
   get token() {
@@ -40,4 +44,4 @@ class HttpClient {
   }
 }
 
-module.exports = HttpClient;
+module.exports = SpotifyHttpClient;

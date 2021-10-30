@@ -2,11 +2,13 @@
   "name": "party-spotify-player",
   "version": "0.0.0",
   "scripts": {
-    "dev": "vite",
     "build": "vue-tsc --noEmit && vite build",
-    "serve": "vite preview"
+    "dev": "vite",
+    "serve": "vite preview",
+    "start": "vite"
   },
   "dependencies": {
+    "axios": "^0.24.0",
     "vue": "^3.2.16"
   },
   "devDependencies": {
