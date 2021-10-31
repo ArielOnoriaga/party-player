@@ -18,10 +18,10 @@ back-list-packages:
 	python3 -m pip list
 
 back-setup:
-	yes | python3 -m pip install -r backend/requirements.txt
+	yes | python3 -m pip install -r requirements.txt
 
 back-clear:
-	yes | python3 -m pip uninstall -r backend/requirements.txt
+	yes | python3 -m pip uninstall -r requirements.txt
 
 back-restart:
 	make back-stop back-start
