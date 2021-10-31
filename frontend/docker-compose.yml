@@ -1,0 +1,9 @@
+version: '2.1'
+services:
+  front:
+    build:
+      context: .
+    ports:
+      - 8990:3000
+    volumes:
+      - ./:/src
