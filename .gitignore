@@ -2,3 +2,4 @@
 token.txt
 _*
 !__*
+*__pycache__*
