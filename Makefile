@@ -19,3 +19,9 @@ back-setup:
 
 back-clear:
 	yes | python3 -m pip uninstall -r backend/requirements.txt
+
+back-start:
+	cd backend && docker-compose up --build -d --remove-orphans
+
+back-down:
+	cd backend && docker-compose down
