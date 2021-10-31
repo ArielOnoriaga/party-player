@@ -1,13 +1,11 @@
 FROM python:3.10.0-slim-buster
 
-WORKDIR src/
+WORKDIR picamix/
 
-ADD requirements.txt src/requirements.txt
-ADD simpleServer.py src/simpleServer.py
 COPY . .
 
-RUN /bin/bash -c "yes | python3 -m pip install -r src/requirements.txt"
+RUN /bin/bash -c "yes | python3 -m pip install -r requirements.txt"
 
 EXPOSE 8989
 
-CMD python3 src/simpleServer.py
+CMD python3 simpleServer.py

@@ -1,6 +1,9 @@
 PKG=''
+srv:
+	docker exec -it backend_picamix_1 /bin/bash
+
 setenv:
-	cp .env-example .env
+	cp .env-example-back backend/.env
 
 back-install:
 	python3 -m pip install $(PKG)
@@ -20,8 +23,11 @@ back-setup:
 back-clear:
 	yes | python3 -m pip uninstall -r backend/requirements.txt
 
+back-restart:
+	make back-stop back-start
+
 back-start:
 	cd backend && docker-compose up --build -d --remove-orphans
 
-back-down:
+back-stop:
 	cd backend && docker-compose down
