@@ -4,6 +4,6 @@ services:
     build:
       context: .
     ports:
-      - 8989:8080
+      - 5000:5000
     volumes:
     - ./:/picamix/

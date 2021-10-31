@@ -6,6 +6,7 @@ COPY . .
 
 RUN /bin/bash -c "yes | python3 -m pip install -r requirements.txt"
 
-EXPOSE 8989
+EXPOSE 5000
 
-CMD python3 simpleServer.py
+# CMD python3 python_rest/server.py
+CMD flask run
