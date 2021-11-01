@@ -1,3 +1,5 @@
 module
 python-decouple
 requests
+Flask
+Flask-RESTful
