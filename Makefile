@@ -1,6 +1,6 @@
 PKG=''
 srv:
-	docker exec -it backend_picamix_1 /bin/bash
+	docker exec -it picamix /bin/bash
 
 setenv:
 	cp .env-example-back backend/.env
@@ -30,4 +30,7 @@ back-start:
 	cd backend && docker-compose up --build -d --remove-orphans
 
 back-stop:
+	cd backend && docker-compose stop
+
+back-down:
 	cd backend && docker-compose down

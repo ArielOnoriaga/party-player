@@ -1,6 +1,7 @@
 version: '2.1'
 services:
-  picamix:
+  backend:
+    container_name: picamix
     build:
       context: .
     ports:
