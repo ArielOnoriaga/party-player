@@ -9,8 +9,9 @@ class TokenRetriever:
         self.client = config('CLIENTID')
         self.secret = config('SECRET')
         self.url = "https://accounts.spotify.com/api/token"
+        self.file = 'token.txt';
 
-    def getToken(self) -> list:
+    def get(self) -> list:
         response = requests.post(
             self.url,
             {
@@ -26,18 +27,33 @@ class TokenRetriever:
         )
         return responseArray
 
-    def saveToken(self, tokenData: list) -> None:
+    def save(self, tokenData: list) -> None:
         currentUnixTime = int(time.time())
         tokenData.update({"created": currentUnixTime})
 
-        tokenFile = 'token.txt'
-        if os.path.exists(tokenFile) :
-            with open(tokenFile, 'r+') as the_file:
-                the_file.truncate(0)
+        if os.path.exists(self.file) :
+            with open(self.file, 'r+') as file:
+                file.truncate(0)
 
-        with open(tokenFile, 'a') as the_file:
-            the_file.write(
+        with open(self.file, 'a') as file:
+            file.write(
                 json.dumps(
                     tokenData
                 )
             )
+
+    def read(self) -> str:
+        with open(self.file, 'r+') as file:
+            tokenInfo = json.loads(file.read())
+            return TokenRetriever().updateIfNeeded(tokenInfo)
+
+    def updateIfNeeded(self, tokenData: list) -> str:
+        currentUnixTime = int(time.time())
+        expiration = tokenData['created'] + tokenData['expires_in']
+        if currentUnixTime - 100 > expiration:
+            TokenRetriever().save(TokenRetriever().get())
+
+        with open(self.file, 'r+') as file:
+            tokenInfo = json.loads(file.read())
+            return tokenInfo['access_token']
+

@@ -1,15 +1,12 @@
 from flask import Flask
-from flask_restful import Resource, Api, reqparse
-from src.TokenRetriever import TokenRetriever
+from flask_restful import Api, reqparse
+from src.TokenRoutes import TokenGet, TokenRead
 
 app = Flask(__name__)
 api = Api(app)
 
-class Token(Resource):
-    def get(self):
-        return TokenRetriever().getToken()
-
-api.add_resource(Token, '/token/')
+api.add_resource(TokenGet, '/token/')
+api.add_resource(TokenRead, '/token/read/')
 
 parser = reqparse.RequestParser()
 
