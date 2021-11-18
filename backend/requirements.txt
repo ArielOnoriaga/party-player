@@ -1,5 +1,4 @@
 module
-spotipy
 python-decouple
 requests
 Flask
