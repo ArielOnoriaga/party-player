@@ -11,21 +11,23 @@ class TokenRetriever:
         self.url = "https://accounts.spotify.com/api/token"
         self.file = 'token.txt';
 
-    def get(self) -> list:
+    def get(self, code: str) -> list:
         response = requests.post(
             self.url,
-            {
-                'grant_type': 'client_credentials',
+            data = {
+                'redirect_uri': 'http://localhost:8989/callback/',
+                'grant_type': 'authorization_code',
+                'scope': 'streaming user-read-playback-state user-read-currently-playing user-modify-playback-state user-read-private user-read-email',
                 'client_id': self.client,
                 'client_secret': self.secret,
-            }
+                'code': str(code)
+            },
+            verify=True
         )
-        responseArray = json.loads(
-            json.dumps(
-                response.json()
-            )
-        )
-        return responseArray
+
+        TokenRetriever().save(response.json())
+
+        return response.json()
 
     def save(self, tokenData: list) -> None:
         currentUnixTime = int(time.time())
@@ -56,4 +58,3 @@ class TokenRetriever:
         with open(self.file, 'r+') as file:
             tokenInfo = json.loads(file.read())
             return tokenInfo['access_token']
-
