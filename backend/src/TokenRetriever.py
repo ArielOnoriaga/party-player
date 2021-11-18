@@ -25,9 +25,10 @@ class TokenRetriever:
             verify=True
         )
 
-        TokenRetriever().save(response.json())
+        result = response.json()
+        TokenRetriever().save(result)
 
-        return response.json()
+        return result
 
     def save(self, tokenData: list) -> None:
         currentUnixTime = int(time.time())
@@ -52,6 +53,7 @@ class TokenRetriever:
     def updateIfNeeded(self, tokenData: list) -> str:
         currentUnixTime = int(time.time())
         expiration = tokenData['created'] + tokenData['expires_in']
+
         if currentUnixTime - 100 > expiration:
             TokenRetriever().save(TokenRetriever().get())
 
