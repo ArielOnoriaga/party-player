@@ -10,6 +10,7 @@ class Search:
 
     def find(self, songOrArtist: str):
         searchUrl = f'{self.url}?q={urllib.parse.quote(songOrArtist)}&type=album,artist,track&limit=30'
+
         response = requests.get(
             searchUrl,
             headers = {
@@ -19,4 +20,3 @@ class Search:
             }
         )
         return response.json()
-
