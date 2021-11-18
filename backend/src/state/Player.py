@@ -5,7 +5,7 @@ from src.TokenRetriever import TokenRetriever
 class Player:
     def __init__(self):
         self.token = TokenRetriever().read()
-        self.endpoint = 'https://api.spotify.com/v1/me/playlists'
+        self.endpoint = 'https://api.spotify.com/v1/me/player'
         self.headers = {
             'Authorization': f'Bearer {self.token}',
             'Content-Type': 'application/json'
