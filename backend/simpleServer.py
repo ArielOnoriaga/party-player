@@ -1,5 +1,6 @@
 from flask import Flask
 from flask_restful import Api, reqparse
+from flask_cors import CORS
 
 from src.routes.Autorize import Autorize
 from src.routes.SearchRoutes import SearchSomething
@@ -8,6 +9,15 @@ from src.routes.TokenRoutes import TokenGet, TokenRead
 from src.routes.PlayerRoutes import PlaySomething, GetDevices, PlayerState
 
 app = Flask(__name__)
+CORS(
+    app,
+    resources = {
+        r"/search/": {
+            "origins": "*"
+        },
+    },
+)
+
 api = Api(app)
 
 api.add_resource(Autorize, '/autorize/')
