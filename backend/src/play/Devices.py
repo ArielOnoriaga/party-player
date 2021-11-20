@@ -19,3 +19,5 @@ class Devices:
         )
         return response.json()['devices']
 
+    def getDefault(self) -> str:
+        return Devices().get()[0]

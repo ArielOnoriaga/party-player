@@ -10,6 +10,10 @@ class PlaySomething(Resource):
     def get(self, uri: str):
         return Player().play(uri)
 
+class Pause(Resource):
+    def get(self):
+        return Player().pause()
+
 class GetDevices(Resource):
     def get(self):
         return Devices().get()
