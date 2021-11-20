@@ -14,6 +14,10 @@ class Pause(Resource):
     def get(self):
         return Player().pause()
 
+class Resume(Resource):
+    def get(self):
+        return Player().resume()
+
 class GetDevices(Resource):
     def get(self):
         return Devices().get()
