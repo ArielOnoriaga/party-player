@@ -1,6 +1,8 @@
 from flask_restful import Resource
+from flask import request
 from src.search.Search import Search
 
 class SearchSomething(Resource):
-    def get(self, songOrArtist: str):
-        return Search().find(songOrArtist)
+    def post(self):
+        value = request.json['name']
+        return Search().find(value)

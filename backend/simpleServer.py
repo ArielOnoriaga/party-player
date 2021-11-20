@@ -11,6 +11,8 @@ app = Flask(__name__)
 api = Api(app)
 
 api.add_resource(Autorize, '/autorize/')
+api.add_resource(PlayerRoutes, '/state/')
+api.add_resource(SearchSomething, '/search/')
 api.add_resource(TokenGet, '/callback/')
 api.add_resource(TokenRead, '/token/read/')
 
