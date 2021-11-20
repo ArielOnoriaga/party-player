@@ -5,7 +5,7 @@ from src.routes.Autorize import Autorize
 from src.routes.SearchRoutes import SearchSomething
 
 from src.routes.TokenRoutes import TokenGet, TokenRead, TokenRefresh
-from src.routes.PlayerRoutes import PlaySomething, GetDevices, PlayerState
+from src.routes.PlayerRoutes import PlaySomething, GetDevices, PlayerState, Pause, Resume
 
 app = Flask(__name__)
 api = Api(app)
@@ -18,6 +18,8 @@ api.add_resource(TokenRefresh, '/token/refresh/')
 
 api.add_resource(PlayerState, '/player/state/')
 api.add_resource(PlaySomething, '/player/play/<uri>')
+api.add_resource(Pause, '/player/pause')
+api.add_resource(Resume, '/player/resume')
 api.add_resource(GetDevices, '/player/devices')
 
 parser = reqparse.RequestParser()
