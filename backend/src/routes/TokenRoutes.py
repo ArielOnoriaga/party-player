@@ -10,3 +10,7 @@ class TokenGet(Resource):
 class TokenRead(Resource):
     def get(self):
         return TokenRetriever().read();
+
+class TokenRefresh(Resource):
+    def get(self):
+        return TokenRetriever().refresh();

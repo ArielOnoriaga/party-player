@@ -1,10 +1,11 @@
 from decouple import config
+from src.Scopes import Scopes
+from decouple import config
 import json
 import os.path
+import base64
 import requests
 import time
-
-from src.Scopes import Scopes
 
 class TokenRetriever:
     def __init__(self):
@@ -36,29 +37,77 @@ class TokenRetriever:
         currentUnixTime = int(time.time())
         tokenData.update({"created": currentUnixTime})
 
-        if os.path.exists(self.file) :
-            with open(self.file, 'r+') as file:
-                file.truncate(0)
+        TokenRetriever().clearOldTokenData()
 
-        with open(self.file, 'a') as file:
-            file.write(
-                json.dumps(
-                    tokenData
-                )
-            )
+        TokenRetriever().saveTokenData(tokenData)
 
     def read(self) -> str:
-        with open(self.file, 'r+') as file:
-            tokenInfo = json.loads(file.read())
-            return TokenRetriever().updateIfNeeded(tokenInfo)
+        return TokenRetriever().getTokenData()['access_token']
+
+    def getTokenData(self) -> list:
+        tokenInfo = TokenRetriever().readTokenData()
+        return TokenRetriever().updateIfNeeded(tokenInfo)
 
     def updateIfNeeded(self, tokenData: list) -> str:
         currentUnixTime = int(time.time())
         expiration = tokenData['created'] + tokenData['expires_in']
 
         if currentUnixTime - 100 > expiration:
-            TokenRetriever().save(TokenRetriever().get())
+            TokenRetriever().get()
 
+        tokenInfo = TokenRetriever().readTokenData()
+        return tokenInfo
+
+    def refresh(self):
+        tokenData = TokenRetriever().getTokenData()
+        credentialsString = f'{self.client}:{self.secret}'
+        credentialsBytes = credentialsString.encode("ascii")
+        base64CredentialsBytes = base64.b64encode(credentialsBytes)
+        base64CredentialsString = base64CredentialsBytes.decode("ascii")
+
+        encodedCredentials = base64.b64encode(credentialsString.encode("ascii"));
+        response = requests.post(
+            self.url,
+            headers = {
+                'Authorization': f'Basic {base64CredentialsString}'
+            },
+            data = {
+                'redirect_uri': self.url,
+                'grant_type': 'refresh_token',
+                'refresh_token': tokenData['refresh_token']
+            },
+            verify=True
+        )
+        responseJson = response.json()
+        TokenRetriever().saveNewToken(responseJson)
+        return True
+
+    def saveNewToken(self, response) -> None:
+        currentUnixTime = int(time.time())
+        oldTokenData = TokenRetriever().readTokenData()
+
+        oldTokenData['access_token'] = response['access_token']
+        oldTokenData['expires_in'] = response['expires_in']
+        oldTokenData['scope'] = response['scope']
+        oldTokenData['token_type'] = response['token_type']
+        oldTokenData['created'] = currentUnixTime
+
+        TokenRetriever().clearOldTokenData()
+        TokenRetriever().saveTokenData(oldTokenData)
+
+    def readTokenData(self) -> list:
         with open(self.file, 'r+') as file:
-            tokenInfo = json.loads(file.read())
-            return tokenInfo['access_token']
+            return json.loads(file.read())
+
+    def clearOldTokenData(self) -> None:
+        if os.path.exists(self.file) :
+            with open(self.file, 'r+') as file:
+                file.truncate(0)
+
+    def saveTokenData(self, tokenData) -> None:
+        with open(self.file, 'a') as file:
+            file.write(
+                json.dumps(
+                    tokenData
+                )
+            )
