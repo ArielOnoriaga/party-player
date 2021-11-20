@@ -1,6 +1,7 @@
 import urllib.parse
 import requests
-from src.TokenRetriever import TokenRetriever
+
+from src.responses.Song import Song
 from src.Headers import Headers
 
 class Search:
@@ -14,6 +15,10 @@ class Search:
         response = requests.get(
             searchUrl,
             headers = Headers().get()
+        ).json()
+
+        response['tracks'] = list(
+            map(Song().create,response['tracks']['items'])
         )
 
-        return response.json()
+        return response
