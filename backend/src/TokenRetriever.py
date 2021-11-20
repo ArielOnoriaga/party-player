@@ -65,7 +65,10 @@ class TokenRetriever:
         base64CredentialsBytes = base64.b64encode(credentialsBytes)
         base64CredentialsString = base64CredentialsBytes.decode("ascii")
 
-        encodedCredentials = base64.b64encode(credentialsString.encode("ascii"));
+        encodedCredentials = base64.b64encode(
+            credentialsString.encode("ascii")
+        );
+
         response = requests.post(
             self.url,
             headers = {
@@ -86,14 +89,13 @@ class TokenRetriever:
         currentUnixTime = int(time.time())
         oldTokenData = TokenRetriever().readTokenData()
 
-        oldTokenData['access_token'] = response['access_token']
-        oldTokenData['expires_in'] = response['expires_in']
-        oldTokenData['scope'] = response['scope']
-        oldTokenData['token_type'] = response['token_type']
-        oldTokenData['created'] = currentUnixTime
+        response.update({
+            "created": currentUnixTime,
+            "refresh_token": oldTokenData['refresh_token']
+        })
 
         TokenRetriever().clearOldTokenData()
-        TokenRetriever().saveTokenData(oldTokenData)
+        TokenRetriever().saveTokenData(response)
 
     def readTokenData(self) -> list:
         with open(self.file, 'r+') as file:
