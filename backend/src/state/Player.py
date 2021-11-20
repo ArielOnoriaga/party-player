@@ -1,6 +1,8 @@
 import json
+import urllib.parse
 import requests
 from src.TokenRetriever import TokenRetriever
+from src.play.Devices import Devices
 
 class Player:
     def __init__(self):
@@ -18,3 +20,16 @@ class Player:
         )
 
         return response.json()
+
+    def play(self, uri: str):
+        devices = Devices().get()
+        firstDevice = devices[0]['id']
+
+        playUrl = f"https://api.spotify.com/v1/me/player/play?device_id={firstDevice}"
+        requestData = {"context_uri": uri,"offset": {"position": 0},"position_ms": 0}
+        response = requests.put(
+            playUrl,
+            headers = self.headers,
+            data = json.dumps(requestData)
+        )
+        return True
