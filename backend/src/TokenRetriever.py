@@ -1,8 +1,10 @@
+from decouple import config
 import json
+import os.path
 import requests
 import time
-import os.path
-from decouple import config
+
+from src.Scopes import Scopes
 
 class TokenRetriever:
     def __init__(self):
@@ -17,7 +19,7 @@ class TokenRetriever:
             data = {
                 'redirect_uri': 'http://localhost:8989/callback/',
                 'grant_type': 'authorization_code',
-                'scope': 'streaming user-read-playback-state user-read-currently-playing user-modify-playback-state user-read-private user-read-email',
+                'scope': Scopes().get(),
                 'client_id': self.client,
                 'client_secret': self.secret,
                 'code': str(code)
