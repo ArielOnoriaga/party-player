@@ -14,7 +14,8 @@ const Container = () => {
             method: 'POST',
             body: JSON.stringify({ name: value }),
             headers: {
-                'Content-type': 'application/json; charset=UTF-8'
+                'Content-type': 'application/json',
+                'Access-Control-Allow-Origin':'*',
             }
         });
 

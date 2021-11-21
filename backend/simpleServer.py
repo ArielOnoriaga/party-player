@@ -9,6 +9,9 @@ from src.routes.TokenRoutes import TokenGet, TokenRead
 from src.routes.PlayerRoutes import PlaySomething, GetDevices, PlayerState
 
 app = Flask(__name__)
+
+api = Api(app)
+
 CORS(
     app,
     resources = {
@@ -16,9 +19,10 @@ CORS(
             "origins": "*"
         },
     },
+    origins='localhost:8990',
+    allow_headers=['Content-Type', 'Access-Control-Allow-Origin'],
+    upport_credentials=True
 )
-
-api = Api(app)
 
 api.add_resource(Autorize, '/autorize/')
 api.add_resource(SearchSomething, '/search/')
