@@ -3,3 +3,4 @@ python-decouple
 requests
 Flask
 Flask-RESTful
+flask-cors
