@@ -34,7 +34,7 @@ api.add_resource(TokenRead, '/token/read/')
 api.add_resource(TokenRefresh, '/token/refresh/')
 
 api.add_resource(PlayerState, '/player/state/')
-api.add_resource(PlaySomething, '/player/play/<uri>')
+api.add_resource(PlaySomething, '/player/play/')
 api.add_resource(Pause, '/player/pause')
 api.add_resource(Resume, '/player/resume')
 api.add_resource(GetDevices, '/player/devices')
