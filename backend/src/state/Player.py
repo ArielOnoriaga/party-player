@@ -22,10 +22,6 @@ class Player:
         return response.json()
 
     def play(self, uri, offset):
-        firstDevice = Devices().getDefault()['id']
-
-        playUrl = f"https://api.spotify.com/v1/me/player/play?device_id={firstDevice}"
-
         requestData = {
             "context_uri": uri,
             "offset": {
@@ -34,18 +30,14 @@ class Player:
             "position_ms": 0
         }
 
-        requests.put(
-            playUrl,
-            headers = self.headers,
-            data = json.dumps(requestData)
-        )
+        Player().playRequest(requestData)
 
         return True
 
     def pause(self):
         firstDevice = Devices().getDefault()['id']
 
-        playUrl = f"https://api.spotify.com/v1/me/player/pause?device_id={firstDevice}"
+        playUrl = f"{self.endpoint}/pause?device_id={firstDevice}"
 
         requests.put(
             playUrl,
@@ -55,5 +47,31 @@ class Player:
         return True
 
     def resume(self):
-        Player().play()
+        Player().playRequest({})
+        return True
+
+    def playRequest(self, requestData) -> None:
+        firstDevice = Devices().getDefault()['id']
+
+        playUrl = f"{self.endpoint}/play?device_id={firstDevice}"
+
+        requests.put(
+            playUrl,
+            headers = self.headers,
+            data = json.dumps(requestData)
+        )
+
+    def volume(self, volume: int):
+        firstDevice = Devices().getDefault()['id']
+
+        volumeParameter = f'volume_percent={volume}'
+        deviceParameter = f'device_id={firstDevice}'
+
+        playUrl = f"{self.endpoint}/volume?{volumeParameter}&{deviceParameter}"
+
+        requests.put(
+            playUrl,
+            headers = self.headers,
+        )
+
         return True
