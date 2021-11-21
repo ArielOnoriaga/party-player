@@ -18,6 +18,9 @@ CORS(
         r"/search/": {
             "origins": "*"
         },
+        r"/player/*": {
+            "origins": "*"
+        },
     },
     origins='localhost:8990',
     allow_headers=['Content-Type', 'Access-Control-Allow-Origin'],

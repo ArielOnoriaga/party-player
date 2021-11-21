@@ -7,5 +7,6 @@ class Song:
       "preview": response['preview_url'],
       "uri": response['uri'],
       "offset": response['track_number'] - 1,
-      "albumUri": response['album']['uri']
+      "albumUri": response['album']['uri'],
+      "img": response['album']['images'][0]['url']
     }
