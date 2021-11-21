@@ -25,3 +25,8 @@ class Resume(Resource):
 class GetDevices(Resource):
     def get(self):
         return Devices().get()
+
+class SetVolume(Resource):
+    def post(self):
+        volume = request.json['volume']
+        return Player().volume(volume)

@@ -6,7 +6,7 @@ from src.routes.Autorize import Autorize
 from src.routes.SearchRoutes import SearchSomething
 
 from src.routes.TokenRoutes import TokenGet, TokenRead, TokenRefresh
-from src.routes.PlayerRoutes import PlaySomething, GetDevices, PlayerState, Pause, Resume
+from src.routes.PlayerRoutes import PlaySomething, GetDevices, PlayerState, Pause, Resume, SetVolume
 
 app = Flask(__name__)
 
@@ -22,7 +22,6 @@ CORS(
             "origins": "*"
         },
     },
-    origins='localhost:8990',
     allow_headers=['Content-Type', 'Access-Control-Allow-Origin'],
     upport_credentials=True
 )
@@ -38,6 +37,7 @@ api.add_resource(PlaySomething, '/player/play/')
 api.add_resource(Pause, '/player/pause')
 api.add_resource(Resume, '/player/resume')
 api.add_resource(GetDevices, '/player/devices')
+api.add_resource(SetVolume, '/player/volume')
 
 parser = reqparse.RequestParser()
 
