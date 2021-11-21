@@ -6,6 +6,11 @@ import ImageListItem from '@mui/material/ImageListItem';
 
 let searchInterval: NodeJS.Timeout;
 
+const headers = {
+    'Content-type': 'application/json',
+    'Access-Control-Allow-Origin':'*',
+}
+
 const SearchContainer = () => {
     const [search, setSearch] = useState<string>('');
     const [tracks, setTracks] = useState<any[]>([]);
@@ -16,10 +21,7 @@ const SearchContainer = () => {
         const response = await fetch('http://localhost:8989/search/', {
             method: 'POST',
             body: JSON.stringify({ name: value }),
-            headers: {
-                'Content-type': 'application/json',
-                'Access-Control-Allow-Origin':'*',
-            }
+            headers
         });
 
         const result = await response.json();
@@ -27,12 +29,11 @@ const SearchContainer = () => {
         setTracks(result.tracks)
     }
 
-    const playSong = async (song: string): Promise<void> => {
-        await fetch(`http://localhost:8989/player/play/${song}`, {
-            method: 'GET',
-            headers: {
-                'Access-Control-Allow-Origin':'*',
-            }
+    const playSong = async (albumUri: string, offset: number): Promise<void> => {
+        await fetch(`http://localhost:8989/player/play/`, {
+            method: 'POST',
+            headers,
+            body: JSON.stringify({ albumUri, offset })
         });
     }
 
@@ -74,7 +75,7 @@ const SearchContainer = () => {
                                 padding: '5px',
                             }}
                             key={track.uri}
-                            onClick={() => playSong(track.albumUri)}
+                            onClick={() => playSong(track.albumUri, track.offset)}
                         >
                             <ImageListItem key={track.img}>
                                 <img

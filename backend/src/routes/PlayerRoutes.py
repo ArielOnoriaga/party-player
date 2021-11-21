@@ -1,4 +1,5 @@
 from flask_restful import Resource
+from flask import request
 from src.state.Player import Player
 from src.play.Devices import Devices
 
@@ -7,8 +8,11 @@ class PlayerState(Resource):
         return Player().state()
 
 class PlaySomething(Resource):
-    def get(self, uri: str):
-        return Player().play(uri)
+    def post(self):
+        albumUri = request.json['albumUri']
+        offset = request.json['offset']
+
+        return Player().play(albumUri, offset)
 
 class Pause(Resource):
     def get(self):

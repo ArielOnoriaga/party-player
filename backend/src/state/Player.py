@@ -21,26 +21,37 @@ class Player:
 
         return response.json()
 
-    def play(self, uri = ''):
+    def play(self, uri, offset):
         firstDevice = Devices().getDefault()['id']
 
         playUrl = f"https://api.spotify.com/v1/me/player/play?device_id={firstDevice}"
-        requestData = {} if uri == '' else {"context_uri": uri,"offset": {"position": 0},"position_ms": 0}
-        response = requests.put(
+
+        requestData = {
+            "context_uri": uri,
+            "offset": {
+                "position": offset
+            },
+            "position_ms": 0
+        }
+
+        requests.put(
             playUrl,
             headers = self.headers,
             data = json.dumps(requestData)
         )
+
         return True
 
     def pause(self):
         firstDevice = Devices().getDefault()['id']
 
         playUrl = f"https://api.spotify.com/v1/me/player/pause?device_id={firstDevice}"
-        response = requests.put(
+
+        requests.put(
             playUrl,
             headers = self.headers,
         )
+
         return True
 
     def resume(self):
