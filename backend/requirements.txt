@@ -4,3 +4,4 @@ requests
 Flask
 Flask-RESTful
 flask-cors
+flask-socketio
