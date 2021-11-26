@@ -8,6 +8,7 @@ from src.routes.Player import player
 
 from src.routes.SearchRoutes import SearchSomething
 from src.routes.TokenRoutes import TokenGet, TokenRead, TokenRefresh
+
 app = Flask(__name__)
 
 socketio = SocketIO(app)

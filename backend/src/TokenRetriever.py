@@ -107,6 +107,9 @@ class TokenRetriever:
                 file.truncate(0)
 
     def saveTokenData(self, tokenData) -> None:
+        if not os.path.exists(self.file) :
+            open(self.file, 'w+')
+
         with open(self.file, 'a') as file:
             file.write(
                 json.dumps(

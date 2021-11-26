@@ -2,6 +2,7 @@ from flask_restful import Resource
 from flask import request, Blueprint
 from src.state.Player import Player
 from src.play.Devices import Devices
+from src.play.Queue import Queue
 
 player = Blueprint('player', __name__,)
 
@@ -32,3 +33,9 @@ def devices():
 def volume():
     volume = request.json['volume']
     return Player().volume(volume)
+
+@player.route('/queue')
+def queue():
+    uri = request.json['albumUri']
+    offset = request.json['offset']
+    return Queue().queueSong(uri, offset)
