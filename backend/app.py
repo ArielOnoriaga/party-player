@@ -42,9 +42,6 @@ api.add_resource(TokenGet, '/callback/')
 api.add_resource(TokenRead, '/token/read/')
 api.add_resource(TokenRefresh, '/token/refresh/')
 
-api.add_resource(GetDevices, '/player/devices')
-api.add_resource(SetVolume, '/player/volume')
-
 parser = reqparse.RequestParser()
 
 if __name__ == "__main__":
