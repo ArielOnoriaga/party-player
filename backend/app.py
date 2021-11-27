@@ -8,6 +8,10 @@ from src.routes.Player import player
 
 from src.routes.SearchRoutes import SearchSomething
 from src.routes.TokenRoutes import TokenGet, TokenRead, TokenRefresh
+
+import sys
+sys.dont_write_bytecode = True
+
 app = Flask(__name__)
 
 socketio = SocketIO(app)
@@ -17,6 +21,7 @@ app.config.update(
     port = 8080,
     debug=True,
 )
+app.config['TEMPLATES_AUTO_RELOAD'] = True
 
 api = Api(app)
 

@@ -17,7 +17,7 @@ class Devices:
             self.url,
             headers = requestHeaders,
         )
-        return response.json()['devices']
+        return response.json()
 
-    def getDefault(self) -> str:
-        return Devices().get()[0]
+    def getDefault(self):
+        return Devices().get()['devices'][0]

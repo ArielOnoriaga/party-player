@@ -1,6 +1,7 @@
 .env
 .DS_Store
-token.txt
+*.txt
+!requirements.txt
 _*
 !__*
 *__pycache__*
