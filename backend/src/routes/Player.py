@@ -40,6 +40,7 @@ def queue():
     offset = request.json['offset']
     return Queue().queueSong(uri, offset)
 
-@player.route('/next/', methods = ['GET'])
+@player.route('/next/', methods = ['POST'])
 def nextSong():
-    return Queue().getNextSong()
+    currentId = request.json['id']
+    return Queue().getNextSong(currentId)
