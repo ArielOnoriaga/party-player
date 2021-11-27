@@ -9,7 +9,7 @@ class Queue:
         if not os.path.exists(self.queue) :
             open(self.queue, 'w+').close()
 
-    def queueSong(self, uri: str, offset: int)-> None:
+    def queueSong(self, uri: str, offset: int):
         Queue().createQueueIfNeeded()
 
         songData = {
@@ -23,17 +23,26 @@ class Queue:
             )
             queue.close()
 
+        return {"success": True}
 
-    def getNextSong(self) -> list:
-        with open(self.file, 'rw') as queue:
-            songs = queue.readlines()
-            nextSong = songs[1].strip()
 
-            del songs[1]
+    def getNextSong(self):
+        with open(self.queue, 'r+') as file:
+            lines = file.readlines()
+            file.close()
 
-            newQueue = open(self.queue, "w+")
+            nextSong = lines[0]
+
+            del lines[0]
+
+            new_file = open(self.queue, "w+")
+
             for line in lines:
-                newQueue.write(line)
+                cleanLine = line.strip("\n");
+                new_file.write(
+                    f'{line}\n'
+                )
+            new_file.close()
 
-            newQueue.close()
+            return json.dumps(json.loads(nextSong))
 

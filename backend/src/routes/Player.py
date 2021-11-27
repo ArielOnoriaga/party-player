@@ -6,36 +6,40 @@ from src.play.Queue import Queue
 
 player = Blueprint('player', __name__,)
 
-@player.route('/state/')
+@player.route('/state/', methods = ['GET'])
 def state():
     return Player().state()
 
-@player.route('/play/')
+@player.route('/play/', methods = ['POST'])
 def play():
     albumUri = request.json['albumUri']
     offset = request.json['offset']
 
     return Player().play(albumUri, offset)
 
-@player.route('/pause/')
+@player.route('/pause/', methods = ['GET'])
 def pause():
     return Player().pause()
 
-@player.route('/resume/')
+@player.route('/resume/', methods = ['GET'])
 def resume():
     return Player().resume()
 
-@player.route('/devices/')
+@player.route('/devices/', methods = ['GET'])
 def devices():
     return Devices().get()
 
-@player.route('/volume')
+@player.route('/volume', methods = ['POST'])
 def volume():
     volume = request.json['volume']
     return Player().volume(volume)
 
-@player.route('/queue')
+@player.route('/queue/', methods = ['POST'])
 def queue():
     uri = request.json['albumUri']
     offset = request.json['offset']
     return Queue().queueSong(uri, offset)
+
+@player.route('/next/', methods = ['GET'])
+def nextSong():
+    return Queue().getNextSong()

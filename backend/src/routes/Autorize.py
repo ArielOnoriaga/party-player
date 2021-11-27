@@ -8,7 +8,7 @@ from src.Scopes import Scopes
 autorization = Blueprint('autorization', __name__,)
 
 @autorization.route('/autorize/')
-def autorize(self):
+def autorize():
     url = 'https://accounts.spotify.com/authorize?'
     scope = urllib.parse.quote(Scopes().get())
     redirection = 'http://localhost:8989/callback/'

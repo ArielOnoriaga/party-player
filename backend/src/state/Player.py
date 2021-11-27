@@ -32,7 +32,7 @@ class Player:
 
         Player().playRequest(requestData)
 
-        return True
+        return {"success": True}
 
     def pause(self):
         firstDevice = Devices().getDefault()['id']
@@ -44,11 +44,11 @@ class Player:
             headers = self.headers,
         )
 
-        return True
+        return {"success": True}
 
     def resume(self):
         Player().playRequest({})
-        return True
+        return {"success": True}
 
     def playRequest(self, requestData) -> None:
         firstDevice = Devices().getDefault()['id']
@@ -74,4 +74,4 @@ class Player:
             headers = self.headers,
         )
 
-        return True
+        return {"success": True}
