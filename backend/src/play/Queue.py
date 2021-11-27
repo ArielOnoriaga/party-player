@@ -1,6 +1,8 @@
 import json
 import os.path
 
+from src.infraestructure.QueueDatabase import QueueDatabase
+
 class Queue:
     def __init__(self):
         self.queue = 'queue.txt';
@@ -10,39 +12,9 @@ class Queue:
             open(self.queue, 'w+').close()
 
     def queueSong(self, uri: str, offset: int):
-        Queue().createQueueIfNeeded()
-
-        songData = {
-            'uri': uri,
-            'offset': offset
-        }
-        with open(self.queue, 'a') as queue:
-            dataString = json.dumps(songData)
-            queue.write(
-                f'{dataString}\n'
-            )
-            queue.close()
+        QueueDatabase().addSong(uri, offset, 0)
 
         return {"success": True}
 
-
-    def getNextSong(self):
-        with open(self.queue, 'r+') as file:
-            lines = file.readlines()
-            file.close()
-
-            nextSong = lines[0]
-
-            del lines[0]
-
-            new_file = open(self.queue, "w+")
-
-            for line in lines:
-                cleanLine = line.strip("\n");
-                new_file.write(
-                    f'{line}\n'
-                )
-            new_file.close()
-
-            return json.dumps(json.loads(nextSong))
-
+    def getNextSong(self, songId: int):
+        return QueueDatabase().getNextSong(songId)
