@@ -1,6 +1,7 @@
 .env
 .DS_Store
 *.txt
+*.pdl
 !requirements.txt
 _*
 !__*
