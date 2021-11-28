@@ -24,6 +24,9 @@ back-clear:
 	yes | python3 -m pip uninstall -r backend/requirements.txt
 
 back-restart:
+	make back-down back-start
+
+back-hard-restart:
 	make back-stop back-start
 
 back-start:

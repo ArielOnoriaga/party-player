@@ -4,7 +4,7 @@ import os.path
 
 class QueueDatabase:
     def __init__(self):
-        self.file = './src/infraestructure/party.pdl'
+        self.file = './src/infraestructure/queue.pdl'
 
     def setUpDatabase(self) -> None:
         if not os.path.exists(self.file) :
@@ -12,21 +12,22 @@ class QueueDatabase:
             db.create('uri', 'offset', 'time')
             db.create_index('uri', 'offset')
 
-    def getDatabase(self):
-        QueueDatabase().setUpDatabase()
-        return Base(self.file)
+    def getDatabase():
+        instance = QueueDatabase()
+        instance.setUpDatabase()
+        return Base(instance.file)
 
-    def addSong(self, albumUri: str, songOffset: int, miliseconds: int):
-        db = QueueDatabase().getDatabase()
+    def addSong(albumUri: str, songOffset: int, miliseconds: int):
+        db = QueueDatabase.getDatabase()
 
         db.open()
-        db.insert(uri=albumUri, offset=songOffset, time=miliseconds)
+        db.insert(albumUri, songOffset, miliseconds)
         db.commit()
 
         return {"success": True}
 
-    def getNextSong(self, currentId: int):
-        db = QueueDatabase().getDatabase()
+    def getNextSong(currentId: int):
+        db = QueueDatabase.getDatabase()
 
         db.open()
         quantity = len(db)
@@ -42,3 +43,10 @@ class QueueDatabase:
             "albumUri": nextItem['uri'],
             "offset": nextItem['offset'],
         }
+
+    def showSongs() -> None:
+        db = QueueDatabase.getDatabase()
+
+        db.open()
+        for register in db:
+            print(register)
