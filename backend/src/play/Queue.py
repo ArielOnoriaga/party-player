@@ -12,9 +12,9 @@ class Queue:
             open(self.queue, 'w+').close()
 
     def queueSong(self, uri: str, offset: int):
-        QueueDatabase().addSong(uri, offset, 0)
+        QueueDatabase.addSong(uri, offset, 0)
 
         return {"success": True}
 
     def getNextSong(self, songId: int):
-        return QueueDatabase().getNextSong(songId)
+        return QueueDatabase.getNextSong(songId)
