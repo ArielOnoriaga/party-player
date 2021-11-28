@@ -4,7 +4,7 @@ import os.path
 
 class QueueDatabase:
     def __init__(self):
-        self.file = './src/infraestructure/party.pdl'
+        self.file = './src/infraestructure/queue.pdl'
 
     def setUpDatabase(self) -> None:
         if not os.path.exists(self.file) :
