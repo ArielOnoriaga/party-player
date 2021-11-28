@@ -23,10 +23,10 @@ class SongsStats:
         record = db(uri=albumUri, offset=songOffset)
         if not record :
             db.insert(
-                uri=albumUri,
-                offset=songOffset,
-                likes=0,
-                dislikes=0
+                albumUri,
+                songOffset,
+                0,
+                0
             )
             db.commit()
             record = db(uri=albumUri, offset=songOffset)
@@ -64,6 +64,18 @@ class SongsStats:
         return {
             "error": "song is not registered"
         }
+
+    def songIsBanned(albumUri: str, songOffset: int) -> bool:
+        db = SongsStats.getDatabase()
+        db.open()
+        exists = db(uri=albumUri, offset=songOffset)
+        if exists:
+            songLikes = exists[0]['likes']
+            songDislikes = exists[0]['dislikes']
+            threshold = 0.85
+            return (songDislikes/(songLikes+songDislikes)) >= threshold
+
+        return False
 
     def showSongs() -> None:
         db = SongsStats.getDatabase()
