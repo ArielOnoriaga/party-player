@@ -2,32 +2,33 @@ import json
 from pydblite import Base
 import os.path
 
+
 class QueueDatabase:
-    def __init__(self):
-        self.file = './src/infraestructure/queue.pdl'
+    def __init__(self, filename=None):
+        dbFile = filename or "queue"
+        basePath = "./src/infraestructure"
+        self.file = f'{basePath}/{dbFile}.pdl'
 
     def setUpDatabase(self) -> None:
-        if not os.path.exists(self.file) :
+        if not os.path.exists(self.file):
             db = Base(self.file)
             db.create('uri', 'offset', 'time')
             db.create_index('uri', 'offset')
 
-    def getDatabase():
-        instance = QueueDatabase()
-        instance.setUpDatabase()
-        return Base(instance.file)
+    def getDatabase(self) -> Base:
+        return Base(self.file)
 
-    def addSong(albumUri: str, songOffset: int, miliseconds: int):
-        db = QueueDatabase.getDatabase()
+    def addSong(self, albumUri: str, songOffset: int):
+        db = self.getDatabase()
 
         db.open()
-        db.insert(albumUri, songOffset, miliseconds)
+        db.insert(albumUri, songOffset, 0)
         db.commit()
 
         return {"success": True}
 
-    def removeSong(albumUri: str, songOffset: int):
-        db = QueueDatabase.getDatabase()
+    def removeSong(self, albumUri: str, songOffset: int):
+        db = self.getDatabase()
 
         db.open()
         for song in (db(uri=albumUri, offset=songOffset)):
@@ -36,26 +37,27 @@ class QueueDatabase:
             return {"success": True}
         return {"success": True}
 
-    def getNextSong(currentId: int):
-        db = QueueDatabase.getDatabase()
-
+    def getNextSong(self, currentId: int):
+        db = self.getDatabase()
         db.open()
-        quantity = len(db)
-        nextId = currentId+1
-        if (nextId >= quantity):
+        try:
+            for record in db:
+                if record['__id__'] > currentId:
+                    return {
+                        "id": record['__id__'],
+                        "albumUri": record['uri'],
+                        "offset": record['offset'],
+                    }
+            return {
+                "error": "there is no next song"
+            }
+        except:
             return {
                 "error": "there is no next song"
             }
 
-        nextItem = db[nextId]
-        return {
-            "id": nextItem['__id__'],
-            "albumUri": nextItem['uri'],
-            "offset": nextItem['offset'],
-        }
-
-    def showSongs() -> None:
-        db = QueueDatabase.getDatabase()
+    def showSongs(self) -> None:
+        db = self.getDatabase()
 
         db.open()
         for register in db:
