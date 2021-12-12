@@ -4,6 +4,7 @@ import requests
 from src.TokenRetriever import TokenRetriever
 from src.play.Devices import Devices
 
+
 class Player:
     def __init__(self):
         self.token = TokenRetriever().read()
@@ -16,7 +17,7 @@ class Player:
     def state(self):
         response = requests.get(
             self.endpoint,
-            headers = self.headers
+            headers=self.headers
         )
 
         return response.json()
@@ -41,7 +42,7 @@ class Player:
 
         requests.put(
             playUrl,
-            headers = self.headers,
+            headers=self.headers,
         )
 
         return {"success": True}
@@ -57,8 +58,8 @@ class Player:
 
         requests.put(
             playUrl,
-            headers = self.headers,
-            data = json.dumps(requestData)
+            headers=self.headers,
+            data=json.dumps(requestData)
         )
 
     def volume(self, volume: int):
@@ -71,7 +72,7 @@ class Player:
 
         requests.put(
             playUrl,
-            headers = self.headers,
+            headers=self.headers,
         )
 
         return {"success": True}
