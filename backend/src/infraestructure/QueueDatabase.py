@@ -26,6 +26,16 @@ class QueueDatabase:
 
         return {"success": True}
 
+    def removeSong(albumUri: str, songOffset: int):
+        db = QueueDatabase.getDatabase()
+
+        db.open()
+        for song in (db(uri=albumUri, offset=songOffset)):
+            db.delete(song)
+            db.commit()
+            return {"success": True}
+        return {"success": True}
+
     def getNextSong(currentId: int):
         db = QueueDatabase.getDatabase()
 
