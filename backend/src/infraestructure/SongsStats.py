@@ -1,6 +1,7 @@
 import json
-from pydblite import Base
 import os.path
+
+from pydblite import Base
 
 class SongsStats:
     def __init__(self):
