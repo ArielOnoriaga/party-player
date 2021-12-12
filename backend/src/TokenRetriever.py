@@ -7,17 +7,18 @@ import base64
 import requests
 import time
 
+
 class TokenRetriever:
     def __init__(self):
         self.client = config('CLIENTID')
         self.secret = config('SECRET')
         self.url = "https://accounts.spotify.com/api/token"
-        self.file = 'token.txt';
+        self.file = 'token.txt'
 
     def get(self, code: str) -> list:
         response = requests.post(
             self.url,
-            data = {
+            data={
                 'redirect_uri': 'http://localhost:8989/callback/',
                 'grant_type': 'authorization_code',
                 'scope': Scopes().get(),
@@ -67,14 +68,14 @@ class TokenRetriever:
 
         encodedCredentials = base64.b64encode(
             credentialsString.encode("ascii")
-        );
+        )
 
         response = requests.post(
             self.url,
-            headers = {
+            headers={
                 'Authorization': f'Basic {base64CredentialsString}'
             },
-            data = {
+            data={
                 'redirect_uri': self.url,
                 'grant_type': 'refresh_token',
                 'refresh_token': tokenData['refresh_token']
@@ -102,12 +103,12 @@ class TokenRetriever:
             return json.loads(file.read())
 
     def clearOldTokenData(self) -> None:
-        if os.path.exists(self.file) :
+        if os.path.exists(self.file):
             with open(self.file, 'r+') as file:
                 file.truncate(0)
 
     def saveTokenData(self, tokenData) -> None:
-        if not os.path.exists(self.file) :
+        if not os.path.exists(self.file):
             open(self.file, 'w+')
 
         with open(self.file, 'a') as file:

@@ -36,9 +36,12 @@ class Player:
         return {"success": True}
 
     def pause(self):
-        firstDevice = Devices().getDefault()['id']
+        device = self.currentDevice()
 
-        playUrl = f"{self.endpoint}/pause?device_id={firstDevice}"
+        if device == '':
+            device = Devices().getDefault()['id']
+
+        playUrl = f"{self.endpoint}/pause?device_id={device}"
 
         requests.put(
             playUrl,
@@ -52,9 +55,12 @@ class Player:
         return {"success": True}
 
     def playRequest(self, requestData) -> None:
-        firstDevice = Devices().getDefault()['id']
+        device = self.currentDevice()
 
-        playUrl = f"{self.endpoint}/play?device_id={firstDevice}"
+        if device == '':
+            device = Devices().getDefault()['id']
+
+        playUrl = f"{self.endpoint}/play?device_id={device}"
 
         requests.put(
             playUrl,
@@ -76,3 +82,7 @@ class Player:
         )
 
         return {"success": True}
+
+    def currentDevice(self):
+        currentState = self.state()
+        return currentState['device']['id'] or ''

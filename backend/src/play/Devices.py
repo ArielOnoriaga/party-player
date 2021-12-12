@@ -3,9 +3,10 @@ import urllib.parse
 import requests
 from src.TokenRetriever import TokenRetriever
 
+
 class Devices:
     def __init__(self):
-        self.token = TokenRetriever().read();
+        self.token = TokenRetriever().read()
         self.url = "https://api.spotify.com/v1/me/player/devices"
 
     def get(self):
@@ -15,7 +16,7 @@ class Devices:
         }
         response = requests.get(
             self.url,
-            headers = requestHeaders,
+            headers=requestHeaders,
         )
         return response.json()
 

@@ -1,7 +1,13 @@
+import sys
+
 from flask import Flask
-from flask_restful import Api, reqparse
+
 from flask_cors import CORS
+
+from flask_restful import Api, reqparse
+
 from flask_socketio import SocketIO
+
 
 from src.routes.Autorize import autorization
 from src.routes.Player import player
@@ -9,7 +15,7 @@ from src.routes.Player import player
 from src.routes.SearchRoutes import SearchSomething
 from src.routes.TokenRoutes import TokenGet, TokenRead, TokenRefresh
 
-import sys
+
 sys.dont_write_bytecode = True
 
 app = Flask(__name__)
@@ -17,8 +23,8 @@ app = Flask(__name__)
 socketio = SocketIO(app)
 
 app.config.update(
-    host = '0.0.0.0',
-    port = 8080,
+    host='0.0.0.0',
+    port=8080,
     debug=True,
 )
 app.config['TEMPLATES_AUTO_RELOAD'] = True
@@ -27,7 +33,7 @@ api = Api(app)
 
 CORS(
     app,
-    resources = {
+    resources={
         r"/search/": {
             "origins": "*"
         },
