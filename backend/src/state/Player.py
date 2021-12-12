@@ -69,10 +69,13 @@ class Player:
         )
 
     def volume(self, volume: int):
-        firstDevice = Devices().getDefault()['id']
+        device = self.currentDevice()
+
+        if device == '':
+            device = Devices().getDefault()['id']
 
         volumeParameter = f'volume_percent={volume}'
-        deviceParameter = f'device_id={firstDevice}'
+        deviceParameter = f'device_id={device}'
 
         playUrl = f"{self.endpoint}/volume?{volumeParameter}&{deviceParameter}"
 
