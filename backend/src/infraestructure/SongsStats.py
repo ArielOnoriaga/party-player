@@ -73,7 +73,14 @@ class SongsStats:
             songLikes = exists[0]['likes']
             songDislikes = exists[0]['dislikes']
             threshold = 0.85
-            return (songDislikes/(songLikes+songDislikes)) >= threshold
+
+            totalVotes = songLikes + songDislikes
+            if totalVotes == 0:
+                return False
+
+            hasMinimumValidations = totalVotes > 10
+            hasFewerLikes = (songDislikes/(totalVotes)) >= threshold
+            return hasMinimumValidations and hasFewerLikes
 
         return False
 
