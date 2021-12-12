@@ -18,11 +18,11 @@ class QueueDatabase:
     def getDatabase(self) -> Base:
         return Base(self.file)
 
-    def addSong(self, albumUri: str, songOffset: int, miliseconds: int):
+    def addSong(self, albumUri: str, songOffset: int):
         db = self.getDatabase()
 
         db.open()
-        db.insert(albumUri, songOffset, miliseconds)
+        db.insert(albumUri, songOffset, 0)
         db.commit()
 
         return {"success": True}
@@ -39,21 +39,22 @@ class QueueDatabase:
 
     def getNextSong(self, currentId: int):
         db = self.getDatabase()
-
         db.open()
-        quantity = len(db)
-        nextId = currentId + 1
-        if (nextId >= quantity):
+        try:
+            for record in db:
+                if record['__id__'] > currentId:
+                    return {
+                        "id": record['__id__'],
+                        "albumUri": record['uri'],
+                        "offset": record['offset'],
+                    }
             return {
                 "error": "there is no next song"
             }
-
-        nextItem = db[nextId]
-        return {
-            "id": nextItem['__id__'],
-            "albumUri": nextItem['uri'],
-            "offset": nextItem['offset'],
-        }
+        except:
+            return {
+                "error": "there is no next song"
+            }
 
     def showSongs(self) -> None:
         db = self.getDatabase()
