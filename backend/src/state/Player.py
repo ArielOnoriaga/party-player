@@ -36,10 +36,7 @@ class Player:
         return {"success": True}
 
     def pause(self):
-        device = self.currentDevice()
-
-        if device == '':
-            device = Devices().getDefault()['id']
+        device = self.getDevice()
 
         playUrl = f"{self.endpoint}/pause?device_id={device}"
 
@@ -55,10 +52,7 @@ class Player:
         return {"success": True}
 
     def playRequest(self, requestData) -> None:
-        device = self.currentDevice()
-
-        if device == '':
-            device = Devices().getDefault()['id']
+        device = self.getDevice()
 
         playUrl = f"{self.endpoint}/play?device_id={device}"
 
@@ -69,10 +63,10 @@ class Player:
         )
 
     def volume(self, volume: int):
-        firstDevice = Devices().getDefault()['id']
+        device = self.getDevice()
 
         volumeParameter = f'volume_percent={volume}'
-        deviceParameter = f'device_id={firstDevice}'
+        deviceParameter = f'device_id={device}'
 
         playUrl = f"{self.endpoint}/volume?{volumeParameter}&{deviceParameter}"
 
@@ -82,6 +76,14 @@ class Player:
         )
 
         return {"success": True}
+
+    def getDevice(self) -> str:
+        device = self.currentDevice()
+
+        if device == '':
+            device = Devices().getDefault()['id']
+
+        return device
 
     def currentDevice(self):
         currentState = self.state()
